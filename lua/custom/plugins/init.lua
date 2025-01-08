@@ -110,6 +110,9 @@ return {
     'projekt0n/github-nvim-theme',
     lazy = false, -- make sure we load this during startup if it is your main colorscheme
     priority = 1000, -- make sure to load this before all the other start plugins
+    config = function()
+      require('github-theme').setup {}
+    end,
   },
   -- catppuccin theme
   {
@@ -134,10 +137,6 @@ return {
     name = 'rose-pine',
     lazy = false,
     priority = 1000,
-    config = function()
-      require('rose-pine').setup {}
-      vim.cmd [[colorscheme rose-pine]]
-    end,
   },
   -- Git Merge Tool
   { 'akinsho/git-conflict.nvim', version = '*', config = true },
@@ -268,17 +267,23 @@ return {
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end)
 
-      vim.keymap.set('n', '<C-h>', function()
+      vim.keymap.set('n', '<C-1>', function()
         harpoon:list():select(1)
       end)
-      vim.keymap.set('n', '<C-t>', function()
+      vim.keymap.set('n', '<C-2>', function()
         harpoon:list():select(2)
       end)
-      vim.keymap.set('n', '<C-n>', function()
+      vim.keymap.set('n', '<C-3>', function()
         harpoon:list():select(3)
       end)
-      vim.keymap.set('n', '<C-s>', function()
+      vim.keymap.set('n', '<C-4>', function()
         harpoon:list():select(4)
+      end)
+      vim.keymap.set('n', '<C-5>', function()
+        harpoon:list():select(5)
+      end)
+      vim.keymap.set('n', '<C-6>', function()
+        harpoon:list():select(6)
       end)
 
       -- Toggle previous & next buffers stored within Harpoon list
@@ -317,41 +322,13 @@ return {
   {
     'towolf/vim-helm',
   },
-  -- -- TMUX
-  -- {
-  --   'christoomey/vim-tmux-navigator',
-  --   lazy = false,
-  --   cmd = {
-  --     'TmuxNavigateLeft',
-  --     'TmuxNavigateDown',
-  --     'TmuxNavigateUp',
-  --     'TmuxNavigateRight',
-  --     'TmuxNavigatePrevious',
-  --   },
-  --   keys = {
-  --     { '<c-left>', '<cmd><C-U>TmuxNavigateLeft<cr>' },
-  --     { '<c-down>', '<cmd><C-U>TmuxNavigateDown<cr>' },
-  --     { '<c-up>', '<cmd><C-U>TmuxNavigateUp<cr>' },
-  --     { '<c-right>', '<cmd><C-U>TmuxNavigateRight<cr>' },
-  --     { '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>' },
-  --   },
-  --   config = function()
-  --     vim.g.tmux_navigator_no_mappings = 1
-  --     vim.keymap.set('n', '<C-Left>', '<cmd>TmuxNavigateLeft<CR>', { silent = true })
-  --     vim.keymap.set('n', '<C-Down>', '<cmd>TmuxNavigateDown<CR>', { silent = true })
-  --     vim.keymap.set('n', '<C-Up>', '<cmd>TmuxNavigateUp<CR>', { silent = true })
-  --     vim.keymap.set('n', '<C-Right>', '<cmd>TmuxNavigateRight<CR>', { silent = true })
-  --     vim.keymap.set('n', '<C-\\>', '<cmd>TmuxNavigatePrevious<CR>', { silent = true })
-  --   end,
-  -- },
-  -- Transparency
   {
-    'xiyaowong/transparent.nvim',
-    config = function()
-      require('transparent').setup {
-        enable = true,
-      }
-      require('transparent').clear_prefix 'NeoTree'
-    end,
+    'nvim-telescope/telescope-file-browser.nvim',
+    dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
   },
+  {
+    'NoahTheDuke/vim-just',
+    ft = { 'just' },
+  },
+  { 'shortcuts/no-neck-pain.nvim', version = '*' },
 }
