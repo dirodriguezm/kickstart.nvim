@@ -73,6 +73,10 @@ do
   vim.o.splitright = true
   vim.o.splitbelow = true
 
+  -- Give floating windows (hover docs, signature help, ...) a visible border
+  --  See `:help 'winborder'`
+  vim.o.winborder = 'rounded'
+
   -- Sets how neovim will display certain whitespace characters in the editor.
   --  See `:help 'list'`
   --  and `:help 'listchars'`
@@ -83,6 +87,13 @@ do
   --   and `:help lua-guide-options`
   vim.o.list = true
   vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
+  -- Use spaces instead of tabs, 4 spaces per indentation level
+  --  See `:help 'expandtab'`
+  vim.o.expandtab = true -- Insert spaces when pressing <Tab>
+  vim.o.tabstop = 4 -- A <Tab> character is displayed as 4 columns
+  vim.o.softtabstop = 4 -- <Tab> in insert mode moves 4 columns
+  vim.o.shiftwidth = 4 -- Indent width for autoindent and << / >>
 
   -- Preview substitutions live, as you type!
   vim.o.inccommand = 'split'
@@ -357,7 +368,10 @@ do
   vim.pack.add { gh 'y9san9/y9nika.nvim' }
 
   -- Load the colorscheme here.
-  vim.cmd.colorscheme 'y9nika-gruber'
+  -- `colors/y9nika-gruvbox.lua` defines gruvbox-palette flavors of y9nika (6 colors each).
+  -- Set 'background' to 'light' for the light palette.
+  vim.o.background = 'dark'
+  vim.cmd.colorscheme 'y9nika-gruvbox'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
