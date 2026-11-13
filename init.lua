@@ -41,6 +41,18 @@ do
   -- Enable break indent
   vim.o.breakindent = true
 
+  -- Indentation: 4 spaces per level, never real tabs
+  --  See `:help 'expandtab'`, `:help 'tabstop'`, `:help 'softtabstop'` and `:help 'shiftwidth'`
+  vim.o.expandtab = true
+  vim.o.tabstop = 4
+  vim.o.softtabstop = 4
+  vim.o.shiftwidth = 4
+
+  -- The Go ftplugin normally forces tabs (to match `gofmt`). Disable that so the
+  -- 4-space indentation above applies to Go files as well.
+  --  See `:help go_recommended_style`
+  vim.g.go_recommended_style = 0
+
   -- Enable undo/redo changes even after closing and reopening a file
   vim.o.undofile = true
 
@@ -245,7 +257,7 @@ local function gh(repo) return 'https://github.com/' .. repo end
 
 -- ============================================================
 -- SECTION 4: UI / CORE UX PLUGINS
--- guess-indent, gitsigns, which-key, colorscheme, todo-comments, mini modules
+-- gitsigns, which-key, colorscheme, todo-comments, mini modules
 -- ============================================================
 do
   -- [[ Installing and Configuring Plugins ]]
@@ -259,10 +271,11 @@ do
   -- For example, lets say we want to install `guess-indent.nvim` - a plugin for
   -- automatically detecting and setting the indentation.
   --
-  -- We first install it from https://github.com/NMAC427/guess-indent.nvim
-  -- and then call its `setup()` function to start it with default settings.
-  vim.pack.add { gh 'NMAC427/guess-indent.nvim' }
-  require('guess-indent').setup {}
+  -- NOTE: Disabled here, because it would override the 4-space indentation set in
+  -- Section 1 whenever a file uses tabs or a different indent width.
+  -- Uncomment both lines below if you want per-file indentation detection instead.
+  -- vim.pack.add { gh 'NMAC427/guess-indent.nvim' }
+  -- require('guess-indent').setup {}
 
   -- Here is a more advanced configuration example that passes options to `gitsigns.nvim`
   --
@@ -344,7 +357,7 @@ do
   vim.pack.add { gh 'y9san9/y9nika.nvim' }
 
   -- Load the colorscheme here.
-  vim.cmd.colorscheme 'y9nika'
+  vim.cmd.colorscheme 'y9nika-gruber'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
@@ -674,7 +687,7 @@ do
     -- clangd = {},
     -- gopls = {},
     -- pyright = {},
-    -- tsc = {},
+    tsc = {},
     --
     -- Some languages (like rust) have entire language plugins that can be useful:
     --    https://github.com/mrcjkb/rustaceanvim
@@ -804,6 +817,7 @@ do
   require('luasnip.loaders.from_vscode').lazy_load()
 
   vim.pack.add { { src = gh 'saghen/blink.cmp', version = vim.version.range '1.*' } }
+  vim.pack.add { { src = gh 'fang2hou/blink-copilot', version = vim.version.range '1.*' } }
   require('blink.cmp').setup {
     keymap = {
       preset = 'default',
@@ -818,14 +832,15 @@ do
     },
 
     sources = {
-      default = { 'lsp', 'path', 'supermaven', 'snippets' },
+      default = { 'lsp', 'path', 'snippets', 'copilot' },
       providers = {
-        supermaven = {
-          name = 'supermaven',
-          module = "blink-cmp-supermaven",
-          async = true
-        }
-      }
+        copilot = {
+          name = 'copilot',
+          module = 'blink-copilot',
+          score_offset = 100,
+          async = true,
+        },
+      },
     },
 
     snippets = { preset = 'luasnip' },
